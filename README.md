@@ -1,11 +1,11 @@
 # Welcome to @dae54/enc
-This is a wrapper to `"crypto-js": "^3.1.9-1"` assisting in easy encryption and decrytion using AES-256
+This is a wrapper to `"crypto-js": "^3.1.9-1"` assisting in easy encryption and decryption using AES-256
 
 ## Installation
 ```bash
 npm i @dae54/enc
 ```
-This will install enc and crypto-js module
+This will install @dae54/enc
 
 ## Usage
 This package exposes 2 public methods, `encrypt` and `decrypt` serving purposes as stating.
@@ -44,7 +44,7 @@ console.log(encrypted)
 
 
 ### Decryption
-To Decrypt,an object item, call `dencrypt(payload,fields)` instance of encHandler.
+To Decrypt,an object item, call `decrypt(payload,fields)` instance of encHandler.
 ```js
 const payload = {
     id: '1',
@@ -53,7 +53,7 @@ const payload = {
     units: 'U2FsdGVkX19yy5FQJvn3iUOxE7aLi5zmN6Kl06Tvbno='   
 }
 const fields = ['price', 'sales', 'units']
-const encrypted = encHandler.dencrypt(payload,fields)
+const encrypted = encHandler.decrypt(payload,fields)
 console.log(encrypted)
 // {
 //     id: '1',
@@ -62,4 +62,10 @@ console.log(encrypted)
 //     units: '100'
 // }  
 ```
+
+## Dependencies
+This package depends on:
+- `"crypto-js": "3.1.9-1"`
+
+So It should work with NodeJs, React Native and ReactJS.
 
