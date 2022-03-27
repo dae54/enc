@@ -1,4 +1,4 @@
-# WELCOME TO @dae54/enc
+# Welcome to @dae54/enc
 
 ## Introduction
 This is a wrapper to `"crypto-js": "^3.1.9-1"` assisting in easy encryption and decrytion using AES-256
@@ -46,5 +46,22 @@ console.log(encrypted)
 
 
 ### Decryption
-Similar approach works with decryption
+To Decrypt,an object item, call `dencrypt(payload,fields)` instance of encHandler.
+```js
+const payload = {
+    id: '1',
+    price: 'U2FsdGVkX18RYNPLtly/ykEjLOQpgtc3ekGyesTCbOo=',
+    sales: 'U2FsdGVkX18KW6tBWBmbsojBiqyKsqWhVVvcBO39c80=',
+    units: 'U2FsdGVkX19yy5FQJvn3iUOxE7aLi5zmN6Kl06Tvbno='   
+}
+const fields = ['price', 'sales', 'units']
+const encrypted = encHandler.dencrypt(payload,fields)
+console.log(encrypted)
+// {
+//     id: '1',
+//     price: '80000',
+//     sales: '900000',
+//     units: '100'
+// }  
+```
 
