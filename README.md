@@ -1,7 +1,7 @@
-# WELCOME TO @DAE54/enc
+# WELCOME TO @dae54/enc
 
 ## Introduction
-This is a wrapper to `"crypto-js": "^4.1.1"` assisting in easy encryption and decrytion using AES-256
+This is a wrapper to `"crypto-js": "^3.1.9-1"` assisting in easy encryption and decrytion using AES-256
 
 ## Installation
 ```bash
