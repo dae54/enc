@@ -1,11 +1,23 @@
 {
-  "name": "enc",
+  "name": "@dae54/enc",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "author": "",
   "license": "ISC",
   "dependencies": {
     "crypto-js": "^4.1.1"
-  }
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dae54/enc.git"
+  },
+  "bugs": {
+    "url": "https://github.com/dae54/enc/issues"
+  },
+  "homepage": "https://github.com/dae54/enc#readme",
+  "description": ""
 }
