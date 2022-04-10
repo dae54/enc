@@ -32,12 +32,12 @@ class EncHandler {
      * //   units: 'U2FsdGVkX19yy5FQJvn3iUOxE7aLi5zmN6Kl06Tvbno='
      * //}  
      */
-    encrypt(payload, fields) {
-        return encrypt(payload, fields, this.key)
+    encrypt(payload, fields, array = []) {
+        return encrypt(payload, fields, array, this.key)
     }
 
-    decrypt(payload, fields) {
-        return decrypt(payload, fields, this.key)
+    decrypt(payload, fields, array = []) {
+        return decrypt(payload, fields, array, this.key)
     }
 }
 

@@ -111,7 +111,122 @@ function decrptObjectItems(payload, nestedFields) {
     return payload
 }
 
-module.exports = { encObjectItems, decrptObjectItems }
+
+function encArrayItems(payload, arrayFields) {
+    const { _encrypt } = require('../helper')
+
+    let payl = payload
+
+    // extract array object from payload
+    arrayFields.map(field => {
+        let fieldsToEncrypt = field.split(':')[1].split('[').join('').split(']').join('').split(',')
+        let parentField = field.split(':')[0]
+
+        let semiPayload = payload[parentField].map(item => {
+
+            const payloadKeys = Object.keys(item).reduce((acc, key) => {
+                acc.push(key)
+                return acc
+            }, [])
+
+
+            const diff = fieldsToEncrypt.filter(field => !payloadKeys.includes(field))
+            if (diff.length > 0) {
+                throw new Error(`Unknown field {${diff}}`)
+            }
+
+
+            const values = fieldsToEncrypt.map(field => item[field])
+
+            const encrypted = values.map(value => _encrypt(value.toString()))
+
+            // return object with encrypted values
+            const encryptedPayload = encrypted.reduce((acc, value, index) => {
+                acc[fieldsToEncrypt[index]] = value
+                return acc
+            }, {})
+
+            // get keys minus fields
+            const rest = payloadKeys.filter(key => !fieldsToEncrypt.includes(key))
+
+            let finalOutput = {
+                ...encryptedPayload,
+                ...rest.reduce((acc, key) => {
+                    acc[key] = item[key]
+                    return acc
+                }, {})
+            }
+
+            return finalOutput
+        })
+
+        payl[parentField] = semiPayload
+    })
+    return payl
+}
+
+function decrptArrayItems(payload, arrayFields) {
+    const { _decrypt } = require('../helper')
+
+    let payl = payload
+
+    // extract array object from payload
+    arrayFields.map(field => {
+        let fieldsToDecrypt = field.split(':')[1].split('[').join('').split(']').join('').split(',')
+        let parentField = field.split(':')[0]
+
+        let semiPayload = payload[parentField].map(item => {
+
+            const payloadKeys = Object.keys(item).reduce((acc, key) => {
+                acc.push(key)
+                return acc
+            }, [])
+
+            const diff = fieldsToDecrypt.filter(field => !payloadKeys.includes(field))
+
+            if (diff.length > 0) {
+                throw new Error(`Unknown field {${diff}}`)
+            }
+
+            const values = fieldsToDecrypt.map(field => item[field])
+
+            const decrypted = values.map(value => _decrypt(value.toString()))
+
+            // return object with encrypted values
+            const decryptedPayload = decrypted.reduce((acc, value, index) => {
+                acc[fieldsToDecrypt[index]] = value
+                return acc
+            }, {})
+
+            // get keys minus fields
+            const rest = payloadKeys.filter(key => !fieldsToDecrypt.includes(key))
+
+            let finalOutput = {
+                ...decryptedPayload,
+                ...rest.reduce((acc, key) => {
+                    acc[key] = item[key]
+                    return acc
+                }, {})
+            }
+
+            return finalOutput
+        })
+
+        payl[parentField] = semiPayload
+    })
+
+    // remove any field with dot from payload object
+
+    const fieldsWithDot = Object.keys(payl).filter(key => key.includes('.'))
+
+    fieldsWithDot.forEach(field => {
+        delete payl[field]
+    })
+
+    return payl
+}
+
+module.exports = { encObjectItems, decrptObjectItems, encArrayItems, decrptArrayItems }
 
 
 

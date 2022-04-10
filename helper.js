@@ -1,5 +1,5 @@
 const CryptoJS = require('crypto-js');
-const { encObjectItems, decrptObjectItems } = require('./dist/wrapper')
+const { encObjectItems, decrptObjectItems, encArrayItems, decrptArrayItems } = require('./dist/wrapper')
 var globKey = null;
 
 module.exports = {
@@ -12,7 +12,7 @@ module.exports = {
         var plaintext = bytes.toString(CryptoJS.enc.Utf8);
         return plaintext;
     },
-    encrypt: (payload, fieldsToEncrypt, key) => {
+    encrypt: (payload, fieldsToEncrypt, arrayFields, key) => {
         if (!globKey) globKey = key;
         if (!fieldsToEncrypt) {
             throw new Error("fields is required")
@@ -63,13 +63,16 @@ module.exports = {
 
         // if nested fields are present then go to encObjectItems
         if (nestedFields.length > 0) {
-            // return
-            return encObjectItems(finalOutput, nestedFields)
+            finalOutput = encObjectItems(finalOutput, nestedFields)
+        }
+
+        if (arrayFields.length > 0) {
+            finalOutput = encArrayItems(finalOutput, arrayFields)
         }
 
         return finalOutput
     },
-    decrypt: (payload, fields, key) => {
+    decrypt: (payload, fields, arrayFields, key) => {
         if (!globKey) globKey = key;
 
         if (!fields) {
@@ -118,6 +121,10 @@ module.exports = {
 
         if (fieldsWithDot.length > 0) {
             return decrptObjectItems(finalOutput, fieldsWithDot)
+        }
+
+        if (arrayFields.length > 0) {
+            finalOutput = decrptArrayItems(finalOutput, arrayFields)
         }
 
         return finalOutput
